@@ -142,5 +142,57 @@ document.addEventListener("DOMContentLoaded", function() {
     data.main.humidity  → humidity (%)
     data.wind.speed     → wind speed (m/s)
     */
+    const t4Btn = document.getElementById("t4-loadWx");
+    const t4Temp = document.getElementById("t4-temp");
+    const t4Hum = document.getElementById("t4-hum");
+    const t4Wind = document.getElementById("t4-wind");
+    const t4Err = document.getElementById("t4-err");
+
+    const OPENWEATHER_API_KEY = "9c29da573838fd8cdd561179419142d7";
+
+    async function loadWeather() {
+        if (!t4Btn || !t4Temp || !t4Hum || !t4Wind) return;
+
+        const base = "https://api.openweathermap.org/data/2.5/weather";
+        const city = "Dammam";
+        const units = "metric";
+        const url = `${base}?q=${encodeURIComponent(
+            city
+        )}&appid=${OPENWEATHER_API_KEY}&units=${units}`;
+
+        try {
+            t4Err && (t4Err.textContent = "");
+            t4Btn.disabled = true;
+            const originalText = t4Btn.textContent;
+            t4Btn.textContent = "Loading…";
+
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const data = await res.json();
+
+            const temp = Math.round(data?.main?.temp);
+            const hum = data?.main?.humidity;
+            const wind = data?.wind?.speed;
+
+            t4Temp.textContent = Number.isFinite(temp) ? `${temp}°C` : "—";
+            t4Hum.textContent = hum != null ? `${hum}%` : "—";
+            t4Wind.textContent = wind != null ? `${wind} m/s` : "—";
+
+            t4Btn.textContent = originalText;
+            t4Btn.disabled = false;
+        } catch (err) {
+            if (t4Err) {
+                t4Err.textContent =
+                    "Could not load weather. Check your API key and network, then try again.";
+            }
+            t4Btn.textContent = "Check Weather ☁️";
+            t4Btn.disabled = false;
+            console.error(err);
+        }
+    }
+
+    if (t4Btn) {
+        t4Btn.addEventListener("click", loadWeather);
+    }
 
 });
