@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
     */
 
 
+
     /*
     =======================================
     TODO4: Dammam Weather Now
@@ -102,4 +103,5 @@ document.addEventListener("DOMContentLoaded", function() {
     data.main.humidity  → humidity (%)
     data.wind.speed     → wind speed (m/s)
     */
+
 });
