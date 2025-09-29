@@ -5,7 +5,7 @@ All tasks in one file (script.js)
 =======================================
 */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
     /*
     =======================================
     TODO1: Welcome Board
@@ -41,7 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // change text here
     });
     */
+    const t2Btn = document.getElementById("t2-btn");
+    const t2Status = document.getElementById("t2-status");
 
+    if (t2Btn && t2Status) {
+        t2Btn.addEventListener("click", () => {
+            t2Status.textContent = "You clicked the button!";
+        });
+    }
 
     /*
     =======================================
