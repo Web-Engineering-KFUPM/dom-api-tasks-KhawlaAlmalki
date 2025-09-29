@@ -41,14 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // change text here
     });
     */
-    const t2Btn = document.getElementById("t2-btn");
-    const t2Status = document.getElementById("t2-status");
 
-    if (t2Btn && t2Status) {
-        t2Btn.addEventListener("click", () => {
-            t2Status.textContent = "You clicked the button!";
-        });
-    }
 
     /*
     =======================================
