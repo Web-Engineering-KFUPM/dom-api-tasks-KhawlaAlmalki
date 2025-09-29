@@ -76,8 +76,47 @@ document.addEventListener("DOMContentLoaded", function() {
     data.content   // the quote text
     data.author    // the author
     */
+    const t3Btn = document.getElementById("t3-loadQuote");
+    const t3Quote = document.getElementById("t3-quote");
+    const t3Author = document.getElementById("t3-author");
 
+    async function loadRandomQuote() {
+        if (!t3Btn || !t3Quote || !t3Author) return;
 
+        try {
+            t3Btn.disabled = true;
+            const originalText = t3Btn.textContent;
+            t3Btn.textContent = "Loading…";
+
+            const res = await fetch("https://dummyjson.com/quotes/random");
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const data = await res.json();
+
+            // Support both shapes:
+            // dummyjson: { quote, author }
+            // quotable-like: { content, author }
+            const quoteText = data?.quote ?? data?.content ?? "Keep going.";
+            const authorText = data?.author ?? "Unknown";
+
+            t3Quote.textContent = `“${quoteText}”`;
+            t3Author.textContent = `— ${authorText}`;
+
+            t3Btn.textContent = originalText;
+            t3Btn.disabled = false;
+        } catch (err) {
+            // Friendly fallback
+            t3Quote.textContent =
+                "“Do not watch the clock. Do what it does. Keep going.”";
+            t3Author.textContent = "— Sam Levenson";
+            t3Btn.textContent = "Inspire Me ✨";
+            t3Btn.disabled = false;
+            console.error(err);
+        }
+    }
+
+    if (t3Btn) {
+        t3Btn.addEventListener("click", loadRandomQuote);
+    }
 
     /*
     =======================================
